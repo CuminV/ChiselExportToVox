@@ -121,7 +121,7 @@ public class ChiselExportVoxMod : ModSystem
                 {
                     Block block = api.World.BlockAccessor.GetBlock(x, y, z);
                     if (block == null || block.Id == 0) continue;
-                    // Вычисление локальной позиции относительно startPos
+                    // startPos
                     BlockPos blockPos = new BlockPos(x, y, z);
                     BlockPos localPos = new BlockPos(
                         (blockPos.Z - startPos.Z) * 16,
@@ -129,7 +129,7 @@ public class ChiselExportVoxMod : ModSystem
                         (blockPos.Y - startPos.Y) * 16
                     );
 
-                    // Теперь localPos - это локальная позиция внутри выделенной области
+                    // localPos
                     processedBlocks++;
 
                     byte[] voxels = new byte[16 * 16 * 16];
@@ -175,7 +175,7 @@ public class ChiselExportVoxMod : ModSystem
 
         List<byte> allChunks = new List<byte>();
         allChunks.AddRange(modelChunks.SelectMany(b => b));
-        allChunks.AddRange(CreateRGBAChunk()); // <--- Добавить RGBA с единым цветом
+        allChunks.AddRange(CreateRGBAChunk()); //  RGBA 
         allChunks.AddRange(CreateNTRNRootChunk());
         allChunks.AddRange(nGRP);
         for (int i = 0; i < nTRNChunks.Count; i++)
@@ -279,13 +279,12 @@ public class ChiselExportVoxMod : ModSystem
     {
         byte[] data = new byte[256 * 4];
 
-        // Цвет под индексом 1 — например, чисто белый (R=255, G=255, B=255, A=255)
+        //  (R=255, G=255, B=255, A=255)
         data[0] = 255; // R
         data[1] = 255; // G
         data[2] = 255; // B
         data[3] = 255; // A
 
-        // Остальные можно оставить прозрачными
         for (int i = 1; i < 256; i++)
         {
             data[i * 4 + 0] = 0;
@@ -334,31 +333,31 @@ public class ChiselExportVoxMod : ModSystem
     {
         List<byte> data = new List<byte>();
 
-        // Стандартная часть структуры nTRN
+        // nTRN
         data.AddRange(BitConverter.GetBytes(nodeId)); // node id
         data.AddRange(BitConverter.GetBytes(0)); // attr dict
         data.AddRange(BitConverter.GetBytes(childNodeId)); // child node id
         data.AddRange(BitConverter.GetBytes(0)); // reserved
         data.AddRange(BitConverter.GetBytes(-1)); // layer id (-1)
 
-        // Динамическая информация
-        byte[] keyBytes = Encoding.ASCII.GetBytes("_t"); // ключ "_t"
+      
+        byte[] keyBytes = Encoding.ASCII.GetBytes("_t"); // key "_t"
         int keyLength = keyBytes.Length;
 
-        // Строка с координатами блока
+      
         string coordinates = $"{localPos.X} {localPos.Y} {localPos.Z}";
         byte[] coordinatesBytes = Encoding.ASCII.GetBytes(coordinates);
         int coordinatesLength = coordinatesBytes.Length;
 
-        // Добавление данных для ключа и координат
+       
         data.AddRange(BitConverter.GetBytes(1)); // num frames
-        data.AddRange(BitConverter.GetBytes(1)); // ключ-значение (например, 1)
-        data.AddRange(BitConverter.GetBytes(keyLength)); // длина ключа
-        data.AddRange(keyBytes); // сам ключ "_t"
-        data.AddRange(BitConverter.GetBytes(coordinatesLength)); // длина значения
-        data.AddRange(coordinatesBytes); // координаты блока
+        data.AddRange(BitConverter.GetBytes(1)); // key (1)
+        data.AddRange(BitConverter.GetBytes(keyLength)); // length key
+        data.AddRange(keyBytes); // key "_t"
+        data.AddRange(BitConverter.GetBytes(coordinatesLength)); 
+        data.AddRange(coordinatesBytes); 
 
-        // Возвращаем готовую структуру
+       
         return CreateChunk("nTRN", data.ToArray());
     }
 
