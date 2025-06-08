@@ -1,0 +1,9 @@
+{
+  "type": "code",
+  "modid": "exportchisel",
+  "name": "Chisel Export Mod",
+  "version": "1.0.0",
+  "description": "Exports chiseled blocks to OBJ",
+  "authors": [ "YourName" ],
+  "Side":"Client"
+}
