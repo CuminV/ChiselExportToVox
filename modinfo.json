@@ -1,9 +1,0 @@
-{
-  "type": "code",
-  "modid": "exportchisel",
-  "name": "Export To VOX Mod",
-  "version": "1.0.0",
-  "description": "Export selected area to VOX format",
-  "authors": [ "BlackCumin" ],
-  "Side":"Client"
-}
